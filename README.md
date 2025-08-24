@@ -6,6 +6,7 @@ It prints basic system information with a small Tux ASCII logo aligned on the ri
 ---
 
 ## ✨ Features
+
 - Pure **Bash**, no external tools required (only standard Linux utilities: `uname`, `uptime`, `df`, `free`).
 - Displays:
   - Operating System
@@ -21,13 +22,14 @@ It prints basic system information with a small Tux ASCII logo aligned on the ri
 ---
 
 ## 📦 Installation
+
 Clone the repository and make the script executable:
 
 ```bash
 git clone https://github.com/vroby65/bfetch.sh.git
 cd bfetch.sh
 chmod +x bfetch.sh
-````
+```
 
 ---
 
@@ -43,12 +45,12 @@ Example output:
 
 ```
 OS:     GNU/Linux                             .--.   
-Distro: Linux Mint 22 "Wilma"                |o_o |  
+Distro: Linux Mint 22.1                      |o_o |  
 Kernel: 6.8.0-41-generic                     |:_/ |  
 Uptime: 3 hours 12 minutes                  //   \ \ 
 Shell:  /usr/bin/fish                      (|     | )
 Term:   xterm-256color                     /'\_   _/`\
-Memory: 1423MB / 7980MB                     \___)=(___/
+Memory: 1423MB / 7980MB                    \___)=(___/
 Disk:   22G / 120G
 
 user@hostname
@@ -67,5 +69,3 @@ user@hostname
 ## 📜 License
 
 MIT License © [vroby65](https://github.com/vroby65)
-
-
