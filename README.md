@@ -1,7 +1,7 @@
 # bfetch.sh
 
 A **mini neofetch** written in pure **Bash**, without dependencies.  
-It prints basic system information with a small Tux ASCII logo aligned on the right.
+It prints basic system information with a small Tux ASCII logo aligned on the right. 
 
 ---
 
