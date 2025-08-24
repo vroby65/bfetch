@@ -15,6 +15,7 @@ It prints basic system information with a small Tux ASCII logo aligned on the ri
   - Uptime
   - Shell
   - Terminal
+  - CPU info
   - Memory usage
   - Disk usage
 - Includes a **small ASCII Tux logo** next to the system info.
