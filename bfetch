@@ -21,7 +21,7 @@ TERM="$TERM"
 MEM="$(free -m -h | awk '/Mem:/ {print $3 "MB / " $2 "MB"}')"
 DISK="$(df -h / | awk 'NR==2 {print $3 " / " $2}')"
 DISTRO=$(grep -E '^PRETTY_NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
-
+CPU="$(cat /proc/cpuinfo | grep "model name" | cut -d':' -f2 | sed 's/^ //' |sort -u )"
 
 # === Logo Tux (small) ===
 read -r -d '' LOGO <<'EOF'
@@ -42,5 +42,7 @@ printf "${c6}Uptime: ${c0}%-40s ${c2}%s\n" "$UPTIME" "$(echo "$LOGO" | sed -n 4p
 printf "${c6}Shell:  ${c0}%-40s ${c2}%s\n" "$SHELL"  "$(echo "$LOGO" | sed -n 5p)"
 printf "${c6}Term:   ${c0}%-40s ${c2}%s\n" "$TERM"   "$(echo "$LOGO" | sed -n 6p)"
 printf "${c6}Memory: ${c0}%-40s ${c2}%s\n" "$MEM"    "$(echo "$LOGO" | sed -n 7p)"
-printf "${c6}Disk:   ${c0}%-40s ${c2}%s\n" "$DISK"   
+printf "${c6}Disk:   ${c0}%-40s ${c2}%s\n" "$DISK"
+printf "${c6}CPU:   ${c0}%-40s ${c2}%s\n" "$CPU"
+
 printf "\n${c4}$USER_HOST${c0}\n"
