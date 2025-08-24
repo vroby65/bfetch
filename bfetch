@@ -18,12 +18,12 @@ KERNEL="$(uname -r)"
 UPTIME="$(uptime -p | cut -d ' ' -f2-)"
 SHELL="$SHELL"
 TERM="$TERM"
-MEM="$(free -m | awk '/Mem:/ {print $3 "MB / " $2 "MB"}')"
+MEM="$(free -m -h | awk '/Mem:/ {print $3 "MB / " $2 "MB"}')"
 DISK="$(df -h / | awk 'NR==2 {print $3 " / " $2}')"
 DISTRO=$(grep -E '^PRETTY_NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
 
 
-# === Logo Tux (piccolo) ===
+# === Logo Tux (small) ===
 read -r -d '' LOGO <<'EOF'
    .--.   
   |o_o |  
@@ -34,7 +34,7 @@ read -r -d '' LOGO <<'EOF'
 \___)=(___/
 EOF
 
-# === Stampa info + logo a destra ===
+# === print info and logo ===
 printf "${c6}OS:     ${c0}%-43s ${c2}%s\n" "$OS"     "$(echo "$LOGO" | sed -n 1p)"
 printf "${c6}Distro: ${c0}%-40s ${c2}%s\n" "$DISTRO" "$(echo "$LOGO" | sed -n 2p)"
 printf "${c6}Kernel: ${c0}%-40s ${c2}%s\n" "$KERNEL" "$(echo "$LOGO" | sed -n 3p)"
