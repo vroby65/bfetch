@@ -22,7 +22,6 @@ MEM="$(free -m -h | awk '/Mem:/ {print $3 "MB / " $2 "MB"}')"
 DISK="$(df -h / | awk 'NR==2 {print $3 " / " $2}')"
 DISTRO=$(grep -E '^PRETTY_NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
 
-
 # === Logo Tux (small) ===
 read -r -d '' LOGO <<'EOF'
    .--.   
