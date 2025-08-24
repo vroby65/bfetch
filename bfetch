@@ -14,13 +14,13 @@ c7="\e[1;37m" # white
 # === Info ===
 USER_HOST="$USER@$(hostname)"
 OS="$(uname -o)"
-DISTRO=$(grep -E '^PRETTY_NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
 KERNEL="$(uname -r)"
 UPTIME="$(uptime -p | cut -d ' ' -f2-)"
 SHELL="$SHELL"
 TERM="$TERM"
 MEM="$(free -m | awk '/Mem:/ {print $3 "MB / " $2 "MB"}')"
 DISK="$(df -h / | awk 'NR==2 {print $3 " / " $2}')"
+DISTRO=$(grep -E '^PRETTY_NAME=' /etc/os-release | cut -d= -f2 | tr -d '"')
 
 
 # === Logo Tux (piccolo) ===
