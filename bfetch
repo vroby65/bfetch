@@ -35,14 +35,14 @@ read -r -d '' LOGO <<'EOF'
 EOF
 
 # === print info and logo ===
-printf "${c6}OS:     ${c0}%-43s ${c2}%s\n" "$OS"     "$(echo "$LOGO" | sed -n 1p)"
-printf "${c6}Distro: ${c0}%-40s ${c2}%s\n" "$DISTRO" "$(echo "$LOGO" | sed -n 2p)"
-printf "${c6}Kernel: ${c0}%-40s ${c2}%s\n" "$KERNEL" "$(echo "$LOGO" | sed -n 3p)"
-printf "${c6}Uptime: ${c0}%-40s ${c2}%s\n" "$UPTIME" "$(echo "$LOGO" | sed -n 4p)"
-printf "${c6}Shell:  ${c0}%-40s ${c2}%s\n" "$SHELL"  "$(echo "$LOGO" | sed -n 5p)"
-printf "${c6}Term:   ${c0}%-40s ${c2}%s\n" "$TERM"   "$(echo "$LOGO" | sed -n 6p)"
-printf "${c6}Memory: ${c0}%-40s ${c2}%s\n" "$MEM"    "$(echo "$LOGO" | sed -n 7p)"
-printf "${c6}Disk:   ${c0}%-40s ${c2}%s\n" "$DISK"
-printf "${c6}CPU:   ${c0}%-40s ${c2}%s\n" "$CPU"
+printf "${c6}OS:     ${c0}%-53s ${c2}%s\n" "$OS"     "$(echo "$LOGO" | sed -n 1p)"
+printf "${c6}Distro: ${c0}%-50s ${c2}%s\n" "$DISTRO" "$(echo "$LOGO" | sed -n 2p)"
+printf "${c6}Kernel: ${c0}%-50s ${c2}%s\n" "$KERNEL" "$(echo "$LOGO" | sed -n 3p)"
+printf "${c6}Uptime: ${c0}%-50s ${c2}%s\n" "$UPTIME" "$(echo "$LOGO" | sed -n 4p)"
+printf "${c6}Shell:  ${c0}%-50s ${c2}%s\n" "$SHELL"  "$(echo "$LOGO" | sed -n 5p)"
+printf "${c6}Term:   ${c0}%-50s ${c2}%s\n" "$TERM"   "$(echo "$LOGO" | sed -n 6p)"
+printf "${c6}CPU:    ${c0}%-50s ${c2}%s\n" "$CPU"    "$(echo "$LOGO" | sed -n 7p)"
+printf "${c6}Memory: ${c0}%-50s ${c2}%s\n" "$MEM"
+printf "${c6}Disk:   ${c0}%-50s ${c2}%s\n" "$DISK"
 
 printf "\n${c4}$USER_HOST${c0}\n"
