@@ -18,7 +18,7 @@ It prints basic system information with a small Tux ASCII logo aligned on the ri
   - CPU info
   - Memory usage
   - Disk usage
-- Includes a **small ASCII Tux logo** next to the system info.
+- Includes a **small ASCII distro logo** next to the system info.
 
 ---
 
