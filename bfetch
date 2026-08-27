@@ -15,6 +15,8 @@ SHELL="$SHELL"
 TERM="$TERM"
 MEM="$(free -m | awk '/Mem:/ {print $3 "MB / " $2 "MB"}')"
 DISK="$(df -h / | awk 'NR==2 {print $3 " / " $2}')"
+GPU="$(lspci 2>/dev/null | grep -iE 'VGA|3D|Display' | sed 's/.*: //' | sed 's/ (rev.*)//' | tr '\n' ' | ' | sed 's/ | $//')"
+[ -z "$GPU" ] && GPU="N/A"
 DISTRO="$(awk -F= '/^PRETTY_NAME=/{gsub(/"/,"",$2);print $2}' /etc/os-release 2>/dev/null)"
 ID="$(awk -f - /etc/os-release 2>/dev/null <<'AWK'
 /^ID=/ { x=$0; sub(/^ID=/,"",x); gsub(/"/,"",x); print x }
@@ -217,6 +219,7 @@ printf "${c6}Term:   ${c0}%-50s %s\n" "$TERM"   "$(l 6)"
 printf "${c6}CPU:    ${c0}%-50s %s\n" "$CPU"    "$(l 7)"
 printf "${c6}Memory: ${c0}%-50s %s\n" "$MEM"    "$(l 8)"
 printf "${c6}Disk:   ${c0}%-50s %s\n" "$DISK"   "$(l 9)"
+printf "${c6}GPU:    ${c0}%-50s %s\n" "$GPU"    "$(l 10)"
 
 # user@host centered above the gradient/logo
 printf "${c4}%-50s %s${c0}\n" "$USER_HOST" ""
