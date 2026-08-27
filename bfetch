@@ -218,7 +218,7 @@ printf "${c6}CPU:    ${c0}%-50s %s\n" "$CPU"    "$(l 7)"
 printf "${c6}Memory: ${c0}%-50s %s\n" "$MEM"    "$(l 8)"
 printf "${c6}Disk:   ${c0}%-50s %s\n" "$DISK"   "$(l 9)"
 
-# user@host centrato sopra al gradiente/logo
+# user@host centered above the gradient/logo
 printf "${c4}%-50s %s${c0}\n" "$USER_HOST" ""
 
 # gradient as if it were extra logo lines
