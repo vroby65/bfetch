@@ -209,21 +209,57 @@ l(){ sed -n "${1}p" <<<"$LOGO"; }  # get Nth logo line
 CPU="$(grep -m1 'model name' /proc/cpuinfo 2>/dev/null | cut -d':' -f2- | sed 's/^ //')"
 [ -z "$CPU" ] && CPU="$(lscpu 2>/dev/null | awk -F: '/Model name/{print $2}' | sed 's/^ //')"
 
-# -- print aligned info + logo (7 lines of logo) ------------------------------
-printf "${c6}OS:     ${c0}%-50s %s\n" "$OS"     "$(l 1)"
-printf "${c6}Distro: ${c0}%-50s %s\n" "$DISTRO" "$(l 2)"
-printf "${c6}Kernel: ${c0}%-50s %s\n" "$KERNEL" "$(l 3)"
-printf "${c6}Uptime: ${c0}%-50s %s\n" "$UPTIME" "$(l 4)"
-printf "${c6}Shell:  ${c0}%-50s %s\n" "$SHELL"  "$(l 5)"
-printf "${c6}Term:   ${c0}%-50s %s\n" "$TERM"   "$(l 6)"
-printf "${c6}CPU:    ${c0}%-50s %s\n" "$CPU"    "$(l 7)"
-printf "${c6}Memory: ${c0}%-50s %s\n" "$MEM"    "$(l 8)"
-printf "${c6}Disk:   ${c0}%-50s %s\n" "$DISK"   "$(l 9)"
-printf "${c6}GPU:    ${c0}%-50s %s\n" "$GPU"    "$(l 10)"
+# -- terminal width -----------------------------------------------------------
+TERMINAL_COLUMNS="${COLUMNS:-}"
+if [[ ! "$TERMINAL_COLUMNS" =~ ^[0-9]+$ ]] || (( TERMINAL_COLUMNS == 0 )); then
+  TERMINAL_SIZE="$(stty size 2>/dev/null </dev/tty || true)"
+  TERMINAL_COLUMNS="${TERMINAL_SIZE##* }"
+fi
+[[ "$TERMINAL_COLUMNS" =~ ^[0-9]+$ ]] && (( TERMINAL_COLUMNS > 0 )) || TERMINAL_COLUMNS=80
 
-# user@host centered above the gradient/logo
-printf "${c4}%-50s %s${c0}\n" "$USER_HOST" ""
+LOGO_WIDTH=0
+while IFS= read -r LOGO_LINE; do
+  PLAIN_LOGO_LINE="$(sed $'s/\033\\[[0-9;]*m//g' <<<"$LOGO_LINE")"
+  (( ${#PLAIN_LOGO_LINE} > LOGO_WIDTH )) && LOGO_WIDTH=${#PLAIN_LOGO_LINE}
+done <<<"$LOGO"
 
-# gradient as if it were extra logo lines
-printf "%-58s %s\n" "" "${c8}██${c1}██${c2}██${c3}██${c4}██${c5}██${c6}██${c7}██${c0}"
-printf "%-58s %s\n" "" "${c16}██${c9}██${c10}██${c11}██${c12}██${c13}██${c14}██${c15}██${c0}"
+INFO_WIDTH=50
+for INFO_VALUE in "$OS" "$DISTRO" "$KERNEL" "$UPTIME" "$SHELL" "$TERM" "$CPU" "$MEM" "$DISK" "$GPU"; do
+  (( ${#INFO_VALUE} > INFO_WIDTH )) && INFO_WIDTH=${#INFO_VALUE}
+done
+WIDE_COLUMNS=$((8 + INFO_WIDTH + 1 + LOGO_WIDTH))
+(( WIDE_COLUMNS < 74 )) && WIDE_COLUMNS=74
+
+# -- print info and logo ------------------------------------------------------
+if (( TERMINAL_COLUMNS >= WIDE_COLUMNS )); then
+  printf "${c6}OS:     ${c0}%-50s %s\n" "$OS"     "$(l 1)"
+  printf "${c6}Distro: ${c0}%-50s %s\n" "$DISTRO" "$(l 2)"
+  printf "${c6}Kernel: ${c0}%-50s %s\n" "$KERNEL" "$(l 3)"
+  printf "${c6}Uptime: ${c0}%-50s %s\n" "$UPTIME" "$(l 4)"
+  printf "${c6}Shell:  ${c0}%-50s %s\n" "$SHELL"  "$(l 5)"
+  printf "${c6}Term:   ${c0}%-50s %s\n" "$TERM"   "$(l 6)"
+  printf "${c6}CPU:    ${c0}%-50s %s\n" "$CPU"    "$(l 7)"
+  printf "${c6}Memory: ${c0}%-50s %s\n" "$MEM"    "$(l 8)"
+  printf "${c6}Disk:   ${c0}%-50s %s\n" "$DISK"   "$(l 9)"
+  printf "${c6}GPU:    ${c0}%-50s %s\n" "$GPU"    "$(l 10)"
+  printf "${c4}%-50s %s${c0}\n" "$USER_HOST" ""
+  printf "%-58s %s\n" "" "${c8}██${c1}██${c2}██${c3}██${c4}██${c5}██${c6}██${c7}██${c0}"
+  printf "%-58s %s\n" "" "${c16}██${c9}██${c10}██${c11}██${c12}██${c13}██${c14}██${c15}██${c0}"
+else
+  for LINE_NUMBER in {1..10}; do
+    printf '%s\n' "$(l "$LINE_NUMBER")"
+  done
+  printf "${c4}%s${c0}\n" "$USER_HOST"
+  printf "%s\n" "${c8}██${c1}██${c2}██${c3}██${c4}██${c5}██${c6}██${c7}██${c0}"
+  printf "%s\n" "${c16}██${c9}██${c10}██${c11}██${c12}██${c13}██${c14}██${c15}██${c0}"
+  printf "${c6}OS:     ${c0}%s\n" "$OS"
+  printf "${c6}Distro: ${c0}%s\n" "$DISTRO"
+  printf "${c6}Kernel: ${c0}%s\n" "$KERNEL"
+  printf "${c6}Uptime: ${c0}%s\n" "$UPTIME"
+  printf "${c6}Shell:  ${c0}%s\n" "$SHELL"
+  printf "${c6}Term:   ${c0}%s\n" "$TERM"
+  printf "${c6}CPU:    ${c0}%s\n" "$CPU"
+  printf "${c6}Memory: ${c0}%s\n" "$MEM"
+  printf "${c6}Disk:   ${c0}%s\n" "$DISK"
+  printf "${c6}GPU:    ${c0}%s\n" "$GPU"
+fi
