@@ -217,21 +217,8 @@ if [[ ! "$TERMINAL_COLUMNS" =~ ^[0-9]+$ ]] || (( TERMINAL_COLUMNS == 0 )); then
 fi
 [[ "$TERMINAL_COLUMNS" =~ ^[0-9]+$ ]] && (( TERMINAL_COLUMNS > 0 )) || TERMINAL_COLUMNS=80
 
-LOGO_WIDTH=0
-while IFS= read -r LOGO_LINE; do
-  PLAIN_LOGO_LINE="$(sed $'s/\033\\[[0-9;]*m//g' <<<"$LOGO_LINE")"
-  (( ${#PLAIN_LOGO_LINE} > LOGO_WIDTH )) && LOGO_WIDTH=${#PLAIN_LOGO_LINE}
-done <<<"$LOGO"
-
-INFO_WIDTH=50
-for INFO_VALUE in "$OS" "$DISTRO" "$KERNEL" "$UPTIME" "$SHELL" "$TERM" "$CPU" "$MEM" "$DISK" "$GPU"; do
-  (( ${#INFO_VALUE} > INFO_WIDTH )) && INFO_WIDTH=${#INFO_VALUE}
-done
-WIDE_COLUMNS=$((8 + INFO_WIDTH + 1 + LOGO_WIDTH))
-(( WIDE_COLUMNS < 74 )) && WIDE_COLUMNS=74
-
 # -- print info and logo ------------------------------------------------------
-if (( TERMINAL_COLUMNS >= WIDE_COLUMNS )); then
+if (( TERMINAL_COLUMNS >= 60 )); then
   printf "${c6}OS:     ${c0}%-50s %s\n" "$OS"     "$(l 1)"
   printf "${c6}Distro: ${c0}%-50s %s\n" "$DISTRO" "$(l 2)"
   printf "${c6}Kernel: ${c0}%-50s %s\n" "$KERNEL" "$(l 3)"
