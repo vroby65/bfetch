@@ -19,7 +19,7 @@ It prints basic system information with a small Tux ASCII logo aligned on the ri
   - Memory usage
   - Disk usage
 - Includes a **small ASCII distro logo** next to the system info.
-- Moves the logo above the system info when the terminal is narrower than 100 columns.
+- Moves the logo above the system info when the terminal is narrower than 90 columns.
 
 ---
 
