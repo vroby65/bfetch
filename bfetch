@@ -218,7 +218,7 @@ fi
 [[ "$TERMINAL_COLUMNS" =~ ^[0-9]+$ ]] && (( TERMINAL_COLUMNS > 0 )) || TERMINAL_COLUMNS=80
 
 # -- print info and logo ------------------------------------------------------
-if (( TERMINAL_COLUMNS >= 60 )); then
+if (( TERMINAL_COLUMNS >= 100 )); then
   printf "${c6}OS:     ${c0}%-50s %s\n" "$OS"     "$(l 1)"
   printf "${c6}Distro: ${c0}%-50s %s\n" "$DISTRO" "$(l 2)"
   printf "${c6}Kernel: ${c0}%-50s %s\n" "$KERNEL" "$(l 3)"

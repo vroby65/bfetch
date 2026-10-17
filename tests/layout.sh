@@ -4,8 +4,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 wide_output="$(COLUMNS=1000 ./bfetch)"
-narrow_output="$(COLUMNS=59 ./bfetch)"
-threshold_output="$(COLUMNS=60 ./bfetch)"
+narrow_output="$(COLUMNS=99 ./bfetch)"
+threshold_output="$(COLUMNS=100 ./bfetch)"
 
 wide_first_line="${wide_output%%$'\n'*}"
 narrow_first_line="${narrow_output%%$'\n'*}"
