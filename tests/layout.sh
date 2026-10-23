@@ -17,3 +17,8 @@ threshold_first_line="${threshold_output%%$'\n'*}"
 
 narrow_os_line="$(grep -m1 'OS:' <<<"$narrow_output")"
 [[ "$narrow_os_line" != *"▀"* ]]
+
+if grep -q 'Temps:' <<<"$wide_output"; then
+  temperature_line="$(grep -m1 'Temps:' <<<"$wide_output")"
+  [[ "$temperature_line" != *"N/A"* ]]
+fi

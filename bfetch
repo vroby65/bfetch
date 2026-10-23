@@ -17,6 +17,33 @@ MEM="$(free -m | awk '/Mem:/ {print $3 "MB / " $2 "MB"}')"
 DISK="$(df -h / | awk 'NR==2 {print $3 " / " $2}')"
 GPU="$(lspci 2>/dev/null | grep -iE 'VGA|3D|Display' | sed 's/.*: //' | sed 's/ (rev.*)//' | tr '\n' ' | ' | sed 's/ | $//')"
 [ -z "$GPU" ] && GPU="N/A"
+get_temp() {
+  local device_pattern="$1" label_pattern="$2" hwmon name label_file input value
+  for hwmon in /sys/class/hwmon/hwmon*; do
+    [ -r "$hwmon/name" ] || continue
+    name="$(cat "$hwmon/name")"
+    [[ "$name" =~ $device_pattern ]] || continue
+    for label_file in "$hwmon"/temp*_label; do
+      [ -r "$label_file" ] || continue
+      label="$(cat "$label_file")"
+      [[ "$label" =~ $label_pattern ]] || continue
+      input="${label_file%_label}_input"
+      [ -r "$input" ] || continue
+      value="$(cat "$input")"
+      [[ "$value" =~ ^-?[0-9]+$ ]] || continue
+      printf '%s°C' "$(((value + 500) / 1000))"
+      return
+    done
+  done
+  printf 'N/A'
+}
+TEMP_CPU="$(get_temp 'k10temp|coretemp' 'Tctl|Tdie|Package id 0')"
+TEMP_GPU="$(get_temp 'amdgpu|nouveau' 'edge|junction|temp[0-9]+')"
+TEMP_MB="$(get_temp 'asus|nct|it87|w[0-9]+' 'motherboard|system|systin|mb')"
+TEMPS=""
+[[ "$TEMP_CPU" != N/A ]] && TEMPS="CPU $TEMP_CPU"
+[[ "$TEMP_GPU" != N/A ]] && TEMPS="${TEMPS:+$TEMPS | }GPU $TEMP_GPU"
+[[ "$TEMP_MB" != N/A ]] && TEMPS="${TEMPS:+$TEMPS | }MB $TEMP_MB"
 DISTRO="$(awk -F= '/^PRETTY_NAME=/{gsub(/"/,"",$2);print $2}' /etc/os-release 2>/dev/null)"
 ID="$(awk -f - /etc/os-release 2>/dev/null <<'AWK'
 /^ID=/ { x=$0; sub(/^ID=/,"",x); gsub(/"/,"",x); print x }
@@ -229,6 +256,7 @@ if (( TERMINAL_COLUMNS >= 90 )); then
   printf "${c6}Memory: ${c0}%-50s %s\n" "$MEM"    "$(l 8)"
   printf "${c6}Disk:   ${c0}%-50s %s\n" "$DISK"   "$(l 9)"
   printf "${c6}GPU:    ${c0}%-50s %s\n" "$GPU"    "$(l 10)"
+  [ -z "$TEMPS" ] || printf "${c6}Temps:  ${c0}%s\n" "$TEMPS"
   printf "${c4}%-50s %s${c0}\n" "$USER_HOST" ""
   printf "%-58s %s\n" "" "${c8}██${c1}██${c2}██${c3}██${c4}██${c5}██${c6}██${c7}██${c0}"
   printf "%-58s %s\n" "" "${c16}██${c9}██${c10}██${c11}██${c12}██${c13}██${c14}██${c15}██${c0}"
@@ -249,4 +277,5 @@ else
   printf "${c6}Memory: ${c0}%s\n" "$MEM"
   printf "${c6}Disk:   ${c0}%s\n" "$DISK"
   printf "${c6}GPU:    ${c0}%s\n" "$GPU"
+  [ -z "$TEMPS" ] || printf "${c6}Temps:  ${c0}%s\n" "$TEMPS"
 fi
